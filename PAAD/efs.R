@@ -6,6 +6,8 @@ library(mlr3verse)
 library(survmob)
 library(tictoc)
 
+disease_code = 'PAAD'
+
 # Reproducibility
 set.seed(42)
 
@@ -13,22 +15,22 @@ set.seed(42)
 lgr::get_logger('bbotk')$set_threshold('warn')
 lgr::get_logger('mlr3' )$set_threshold('warn')
 
-# Tasks and partition
-tasks = readRDS(file = 'PAAD/data/tasks.rds')
-part  = readRDS(file = 'PAAD/data/part.rds')
+# Tasks and data partition
+tasks = readRDS(file = paste0(disease_code, '/data/tasks.rds'))
+part  = readRDS(file = paste0(disease_code, '/data/part.rds'))
 
 # eFS variables
-nthreads_rsf = 14
+nthreads_rsf = 20
 n_features = 5
-repeats = 1
+repeats = 100
 
 # helper function
-execute_efs = function(task, part, msr_id, rs, nthreads_rsf, n_features, repeats) {
+execute_efs = function(task, part, msr_id, rs, repeats, nthreads_rsf, n_features) {
   print(task$id)
 
   task2 = task$clone()
   task2$filter(rows = part$train)
-  task2$col_roles$stratum = 'status'
+  task2$col_roles$stratum = 'status' # Stratify
 
   efs = eFS$new(msr_id = msr_id, resampling = rs, repeats = repeats,
     nthreads_rsf = nthreads_rsf, n_features = n_features)
@@ -53,12 +55,12 @@ for (task in tasks) {
     data_list[[task$id]] = efs
 
     # temporary save just in case:
-    file_name = paste0('PAAD/efs/cindex_efs_', task$id, '.rds')
-    saveRDS(efs, file = file_path)
+    file_name = paste0(disease_code, '/efs/cindex_efs_', task$id, '.rds')
+    saveRDS(efs, file = file_name)
   }
 }
 
-saveRDS(data_list, file = 'PAAD/efs/cindex_efs.rds')
+saveRDS(data_list, file = paste0(disease_code, '/efs/cindex_efs.rds'))
 
 # Measure: RCLL ----
 msr_id = 'rcll'
@@ -74,9 +76,9 @@ for (task in tasks) {
     data_list[[task$id]] = efs
 
     # temporary save just in case:
-    file_name = paste0('PAAD/efs/rcll_efs_', task$id, '.rds')
-    saveRDS(efs, file = file_path)
+    file_name = paste0(disease_code, '/efs/rcll_efs_', task$id, '.rds')
+    saveRDS(efs, file = file_name)
   }
 }
 
-saveRDS(data_list, file = 'PAAD/efs/rcll_efs.rds')
+saveRDS(data_list, file = paste0(disease_code, '/efs/rcll_efs.rds'))
