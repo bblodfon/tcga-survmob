@@ -1,0 +1,51 @@
+[1] "Clinical"
+<TaskSurv:Clinical> (145 x 8)
+* Target: time, status
+* Properties: -
+* Features (6):
+  - fct (4): gender, pathologic_stage, radiation_therapy,
+    residual_tumor
+  - int (2): age, number_of_lymph_nodes
+[1] "Missing features:"
+                 time                status                   age 
+                    0                     0                     0 
+               gender number_of_lymph_nodes      pathologic_stage 
+                    0                     1                     1 
+    radiation_therapy        residual_tumor 
+                   13                    10 
+[1] "Clinical variables:"
+[1] "age, gender, number_of_lymph_nodes, pathologic_stage, radiation_therapy, residual_tumor"
+0.374 sec elapsed
+[1] TRUE
+[1] "#features remained: 8"
+[1] "Number of events: 85"
+[1] "Censoring rate: 41%"
+[1] "mRNA"
+53.065 sec elapsed
+[1] "#features removed (NAs): 0"
+[1] "#features removed (zeros): 3367"
+[1] "#features after variance filtering: 10000"
+[1] "#features imputed: 0"
+[1] "#features removed (pair-wise correlation): 265"
+[1] "#features remained: 9735"
+[1] "CNA"
+559.937 sec elapsed
+[1] "#features removed (NAs): 985"
+[1] "#features after variance filtering: 10000"
+[1] "#features imputed: 171"
+[1] "#features remained: 10000"
+[1] "miRNA"
+0.424 sec elapsed
+[1] "#features removed (NAs): 0"
+[1] "#features removed (zeros): 661"
+[1] "#features after variance filtering: 385"
+[1] "#features imputed: 0"
+[1] "#features removed (pair-wise correlation): 21"
+[1] "#features remained: 364"
+[1] "Methylation"
+4401.722 sec elapsed
+[1] "#features removed (NAs): 55207"
+[1] "#features after variance filtering: 10000"
+[1] "#features imputed: 731"
+[1] "#features removed (pair-wise correlation): 701"
+[1] "#features remained: 9299"
