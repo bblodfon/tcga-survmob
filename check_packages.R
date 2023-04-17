@@ -6,7 +6,7 @@ package_info('mlr3', dependencies = F) # 0.15.0
 package_info('mlr3tuning', dependencies = F) # 0.18.0
 package_info('mlr3mbo', dependencies = F) # 0.1.2
 package_info('DiceKriging', dependencies = F) # 1.6.0
-package_info('mlr3filters', dependencies = F) # 0.7.1@c6853cf
+package_info('mlr3filters', dependencies = F) # 0.7.1@c684ecf
 #' fixing `find_correlation` filter that couldn't be used with survival tasks
 package_info('mlr3proba', dependencies = F) # 0.5.2@e263908
 #' lots of fixes regarding measures (RCLL, ERV measures, etc.)
