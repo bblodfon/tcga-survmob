@@ -3,6 +3,7 @@ library(devtools)
 
 # mlr3
 package_info('mlr3', dependencies = F) # 0.15.0
+package_info('mlr3pipelines', dependencies = F) # 0.4.3
 package_info('mlr3tuning', dependencies = F) # 0.18.0
 package_info('paradox', dependencies = F) # 0.11.1
 package_info('mlr3mbo', dependencies = F) # 0.1.2
