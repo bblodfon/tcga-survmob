@@ -1,7 +1,6 @@
 #' => Ensemble feature selection on PAAD omics (tasks)
 #' => Use separately the C-index (OOB error) and RCLL measure to optimize
 #' during feature selection
-library(tidyverse)
 library(mlr3verse)
 library(survmob)
 library(tictoc)
@@ -20,7 +19,7 @@ tasks = readRDS(file = paste0(disease_code, '/data/tasks.rds'))
 part  = readRDS(file = paste0(disease_code, '/data/part.rds'))
 
 # eFS variables
-nthreads_rsf = 20
+nthreads_rsf = 10
 n_features = 5
 repeats = 100
 
