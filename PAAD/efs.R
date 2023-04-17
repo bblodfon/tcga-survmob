@@ -25,7 +25,7 @@ repeats = 100
 
 # helper function
 execute_efs = function(task, part, msr_id, rs, repeats, nthreads_rsf, n_features) {
-  print(task$id)
+  message('Omic: ', task$id)
 
   task2 = task$clone()
   task2$filter(rows = part$train)
@@ -39,6 +39,7 @@ execute_efs = function(task, part, msr_id, rs, repeats, nthreads_rsf, n_features
 }
 
 # Measure: OOB (1 - C-index) ----
+message('### OOB error ###')
 msr_id = 'oob_error'
 rs = rsmp('insample')
 
@@ -62,6 +63,7 @@ for (task in tasks) {
 saveRDS(data_list, file = paste0(disease_code, '/efs/cindex_efs.rds'))
 
 # Measure: RCLL ----
+message('### RCLL ###')
 msr_id = 'rcll'
 rs = rsmp('cv', folds = 5)
 
