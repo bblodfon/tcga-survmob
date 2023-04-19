@@ -13,6 +13,8 @@ package_info('mlr3filters', dependencies = F) # 0.7.1@c684ecf
 package_info('mlr3proba', dependencies = F) # 0.5.2@e263908
 #' lots of fixes regarding measures (RCLL, ERV measures, etc.)
 package_info('distr6', dependencies = F) # 1.6.15
+package_info('stabm', dependencies = F) # 1.2.2
+package_info('Matrix', dependencies = F) # 1.5-4
 
 # models
 package_info('mlr3extralearners', dependencies = F) # 0.6.1
