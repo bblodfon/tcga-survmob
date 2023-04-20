@@ -1,7 +1,7 @@
 #' For quick checking the version of packages required
 library(devtools)
 
-# mlr3
+# mlr3 and others
 package_info('mlr3', dependencies = F) # 0.15.0
 package_info('mlr3pipelines', dependencies = F) # 0.4.3
 package_info('mlr3tuning', dependencies = F) # 0.18.0
@@ -15,8 +15,9 @@ package_info('mlr3proba', dependencies = F) # 0.5.2@e263908
 package_info('distr6', dependencies = F) # 1.6.15
 package_info('stabm', dependencies = F) # 1.2.2
 package_info('Matrix', dependencies = F) # 1.5-4
+package_info('tictoc', dependencies = F) # 1.1
 
-# models
+# model-related
 package_info('mlr3extralearners', dependencies = F) # 0.6.1
 package_info('glmnet', dependencies = F) # 4.1-7
 package_info('ranger', dependencies = F) # 0.14.1
