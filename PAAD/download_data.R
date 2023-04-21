@@ -2,6 +2,8 @@
 #' => Filter/Simplify omics data
 #' => Find suitable omics subset for survival prediction task
 #' => Save data to files
+#'
+#' Execute command: `Rscript PAAD/download_data.R` (not via Rstudio!)
 library(curatedTCGAData)
 library(TCGAutils)
 library(dplyr)
@@ -52,6 +54,14 @@ print(check_samples(cancer_data))
 # keep only primary tumor samples
 cancer_data = TCGAutils::TCGAprimaryTumors(cancer_data)
 print(check_samples(cancer_data)) # verify: (only '01')
+
+MultiAssayExperiment::replicates(cancer_data) # no replicates
+
+#' (SOS) hack for CNA data - if you perform more filtering in later steps,
+#' `simplifyTCGA()` will fail, so do it now and subset to common patients later
+cna = cancer_data[,,'PAAD_CNASNP-20160128']
+#' Simplify features: from genomics ranges to gene symbols
+cna_simplified = TCGAutils::simplifyTCGA(cna)
 
 # keep only patients with the major `histological_type`
 # PDAC => 154 patients
@@ -126,9 +136,6 @@ print(cancer_data)
 cancer_data = MultiAssayExperiment::intersectColumns(cancer_data)
 print(paste0('#Patients: ', nrow(colData(cancer_data)))) # number of patients (145)
 
-# any replicates? (no)
-MultiAssayExperiment::replicates(cancer_data)
-
 # check that patientIDs are in correct order across all assays (SOS)
 for(i in 1:length(cancer_data)) {
   stopifnot(substr(colnames(cancer_data[[i]]), 1, 12) == cancer_data$patientID)
@@ -144,10 +151,18 @@ print(dim(mrna_mat))
 readr::write_csv(x = as_tibble(mrna_mat), file = paste0(disease_code, '/data/mRNA.csv'))
 
 ## CNA ----
-cna = cancer_data[,,'PAAD_CNASNP-20160128']
-cna_simplified = TCGAutils::simplifyTCGA(cna)
-cna_mat = t(assay(cna_simplified))
+#' Subset the `cna` MultiAssayExperiment to the common patient ids
+ids_cna  = rownames(colData(cna_simplified))
+ids_orig = rownames(colData(cancer_data))
 
+log_vec = ids_cna %in% ids_orig
+cna_simplified = cna_simplified[, log_vec, ]
+
+# check: same patients ids
+all(rownames(colData(cna_simplified)) == rownames(colData(cancer_data)))
+
+# get the assay
+cna_mat = t(assay(cna_simplified))
 cna_mat[1:5,1:5] # CNA log2 values (positive => amplifications, negative => deletions)
 print(dim(cna_mat))
 readr::write_csv(x = as_tibble(cna_mat), file = paste0(disease_code, '/data/CNA.csv'))
