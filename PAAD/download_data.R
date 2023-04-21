@@ -141,7 +141,7 @@ mrna_mat = t(assay(mrna))
 
 mrna_mat[1:5,1:5] # count data
 print(dim(mrna_mat))
-readr::write_csv(x = as_tibble(mrna_mat), file = 'PAAD/data/mRNA.csv')
+readr::write_csv(x = as_tibble(mrna_mat), file = paste0(disease_code, '/data/mRNA.csv'))
 
 ## CNA ----
 cna = cancer_data[,,'PAAD_CNASNP-20160128']
@@ -150,7 +150,7 @@ cna_mat = t(assay(cna_simplified))
 
 cna_mat[1:5,1:5] # CNA log2 values (positive => amplifications, negative => deletions)
 print(dim(cna_mat))
-readr::write_csv(x = as_tibble(cna_mat), file = 'PAAD/data/CNA.csv')
+readr::write_csv(x = as_tibble(cna_mat), file = paste0(disease_code, '/data/CNA.csv'))
 
 ## miRNA ----
 mirna = cancer_data[,,'PAAD_miRNASeqGene-20160128']
@@ -158,7 +158,7 @@ mirna_mat = t(assay(mirna))
 
 mirna_mat[1:5,1:5] # counts
 print(dim(mirna_mat))
-readr::write_csv(x = as_tibble(mirna_mat), file = 'PAAD/data/miRNA.csv')
+readr::write_csv(x = as_tibble(mirna_mat), file = paste0(disease_code, '/data/miRNA.csv'))
 
 ## Methylation ----
 meth = cancer_data[,,'PAAD_Methylation-20160128']
@@ -178,7 +178,7 @@ all(somatic_cpgs %in% colnames(methyl_mat)) # check
 # subset CpGs
 methyl_mat = methyl_mat[, somatic_cpgs]
 print(dim(methyl_mat))
-readr::write_csv(x = as_tibble(methyl_mat), file = 'PAAD/data/methyl.csv')
+readr::write_csv(x = as_tibble(methyl_mat), file = paste0(disease_code, '/data/methyl.csv'))
 
 ## Clinical ----
 # Level 4 clinical & pathological data
@@ -198,8 +198,8 @@ clin_tbl = colData(cancer_data)[, clinical_vars] %>%
     'pathology_M_stage', 'pathology_N_stage', 'pathology_T_stage', # redundant,
     # since we have the `pathologic_stage` which is a combination assessment of
     # the 3 features above (T,N,M stages)
-    'race', 'ethnicity' # most are white, non-hispanic or latinos
+    'race', 'ethnicity'
   ))
 clin_tbl
 
-readr::write_csv(x = clin_tbl, file = 'PAAD/data/clinical.csv')
+readr::write_csv(x = clin_tbl, file = paste0(disease_code, '/data/clinical.csv'))
