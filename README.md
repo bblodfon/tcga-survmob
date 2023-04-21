@@ -4,3 +4,9 @@ This repository is a continuation of [paad-survival-bench](https://github.com/bb
 
 - TO ADD: link for the full downloaded datasets.
 
+The order to execute the scripts per cancer type is:
+- `download_data.R`
+- `preprocess.R`
+- `data_split.R`
+- `efs.R`
+
