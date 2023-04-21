@@ -2,8 +2,8 @@ library(mlr3verse)
 library(mlr3proba)
 
 set.seed(42)
-
-tasks = readRDS(file = 'PAAD/data/tasks.rds')
+disease_code = 'PAAD'
+tasks = readRDS(file = paste0(disease_code, '/data/tasks.rds'))
 
 # verify all tasks have the same (time, status) outcomes
 for (tsk_index in 1:(length(tasks) - 1)) {
@@ -24,4 +24,4 @@ for (tsk_index in 1:(length(tasks) - 1)) {
 #' the survival task by `status`
 part = partition(tasks$Clinical, ratio = 0.8, stratify = TRUE)
 
-saveRDS(part, file = 'PAAD/data/part.rds')
+saveRDS(part, file = paste0(disease_code, '/data/part.rds'))
