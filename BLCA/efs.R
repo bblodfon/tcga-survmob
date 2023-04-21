@@ -24,7 +24,8 @@ n_features = 5
 repeats = 100
 
 # helper function
-execute_efs = function(task, part, msr_id, rs, repeats, nthreads_rsf, n_features) {
+run_efs = function(task, part, msr_id, rs, repeats, nthreads_rsf, n_features,
+  lrn_ids) {
   message('Omic: ', task$id)
 
   task2 = task$clone()
@@ -32,7 +33,7 @@ execute_efs = function(task, part, msr_id, rs, repeats, nthreads_rsf, n_features
   task2$col_roles$stratum = 'status' # Stratify
 
   efs = eFS$new(msr_id = msr_id, resampling = rs, repeats = repeats,
-    nthreads_rsf = nthreads_rsf, n_features = n_features)
+    nthreads_rsf = nthreads_rsf, n_features = n_features, lrn_ids = lrn_ids)
   efs$run(task = task2)
 
   efs
@@ -42,14 +43,15 @@ execute_efs = function(task, part, msr_id, rs, repeats, nthreads_rsf, n_features
 message('### OOB error ###')
 msr_id = 'oob_error'
 rs = rsmp('insample')
+lrn_ids = eFS$new()$supported_lrn_ids()
 
 data_list = list()
 for (task in tasks) {
   if (task$id != 'Clinical') { # efs only for omic data
     tic()
-    efs = execute_efs(task = task, part = part, msr_id = msr_id, rs = rs,
-      nthreads_rsf = nthreads_rsf, n_features = n_features, repeats = repeats
-    )
+    efs = run_efs(task = task, part = part, msr_id = msr_id, rs = rs,
+      nthreads_rsf = nthreads_rsf, n_features = n_features, repeats = repeats,
+      lrn_ids = lrn_ids)
     toc()
 
     data_list[[task$id]] = efs
@@ -71,9 +73,9 @@ data_list = list()
 for (task in tasks) {
   if (task$id != 'Clinical') { # efs only for omic data
     tic()
-    efs = execute_efs(task = task, part = part, msr_id = msr_id, rs = rs,
-      nthreads_rsf = nthreads_rsf, n_features = n_features, repeats = repeats
-    )
+    efs = run_efs(task = task, part = part, msr_id = msr_id, rs = rs,
+      nthreads_rsf = nthreads_rsf, n_features = n_features, repeats = repeats,
+      lrn_ids = lrn_ids)
     toc()
 
     data_list[[task$id]] = efs
