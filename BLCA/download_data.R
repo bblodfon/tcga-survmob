@@ -22,8 +22,7 @@ curatedTCGAData::curatedTCGAData(diseaseCode = disease_code, version = '2.0.1',
   dry.run = TRUE)
 
 # Download selected assays
-my_assays = c('*RPPA*', '*Methylation*', '*miRNA*', '*RNASeq2GeneNorm*',
-  '*Mutation*', '*CNASNP*')
+my_assays = c('*RPPA*', '*Methylation*', '*miRNA*', '*RNASeq2GeneNorm*', '*CNASNP*')
 cancer_data = curatedTCGAData::curatedTCGAData(diseaseCode = disease_code,
   assays = my_assays, version = '2.0.1', dry.run = FALSE)
 print(cancer_data)
@@ -94,7 +93,7 @@ head(pm)
 powcs = survmob::powerset_icounts(pm)
 
 # checks number of omics in a combo and intersection counts
-for (num in 4:6) {
+for (num in 4:5) {
   row = powcs %>%
     arrange(desc(intersect_count)) %>%
     select(!combo_name) %>%
