@@ -70,9 +70,11 @@ rs = rsmp('cv', folds = 5)
 data_list = list()
 for (task in tasks) {
   if (task$id != 'Clinical') { # efs only for omic data
+    tic()
     efs = execute_efs(task = task, part = part, msr_id = msr_id, rs = rs,
       nthreads_rsf = nthreads_rsf, n_features = n_features, repeats = repeats
     )
+    toc()
 
     data_list[[task$id]] = efs
 
