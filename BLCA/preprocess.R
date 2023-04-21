@@ -1,6 +1,8 @@
 #' => Make `mlr3` survival tasks using omics and clinical data
 #' => Preprocess omics data with `ml3pipelines` and `survmob`
 #' => Save preprocessed `mlr3` tasks
+#'
+#' Execute command: `Rscript BLCA/preprocess.R > BLCA/data/preprocess.log`
 library(tidyverse)
 library(survmob)
 library(mlr3verse)
