@@ -2,3 +2,4 @@
 .Rhistory
 */data/*.csv
 other_cancer_types/
+*.tgz
