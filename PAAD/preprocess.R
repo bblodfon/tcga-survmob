@@ -10,9 +10,11 @@ library(mlr3proba)
 library(tictoc) # to measure the preprocessing time
 set.seed(42)
 
+disease_code = 'PAAD'
+
 # Clinical ----
 print('Clinical')
-clin_tbl = readr::read_csv(file = 'PAAD/data/clinical.csv')
+clin_tbl = readr::read_csv(file = paste0(disease_code, '/data/clinical.csv'))
 
 clin_tbl2 = clin_tbl %>%
   select(-c('patient_id')) %>% # remove patient ID
@@ -146,7 +148,7 @@ print_stats = function(pipeline) {
 # Omics Preprocessing ----
 ## mRNA ----
 print('mRNA')
-mRNA = readr::read_csv(file = 'PAAD/data/mRNA.csv', col_types = 'd')
+mRNA = readr::read_csv(file = paste0(disease_code, '/data/mRNA.csv'), col_types = 'd')
 
 colnames(mRNA) = make.names(colnames(mRNA)) # proper syntactic names
 colnames(mRNA) = paste0('mRNA.', colnames(mRNA)) # omic prefix for feature uniqueness
@@ -177,7 +179,7 @@ print(paste0('#features remained: ', length(mRNA_task$feature_names)))
 
 ## CNA ----
 print('CNA')
-CNA = readr::read_csv(file = 'PAAD/data/CNA.csv', col_types = 'd')
+CNA = readr::read_csv(file = paste0(disease_code, '/data/CNA.csv'), col_types = 'd')
 
 colnames(CNA) = make.names(colnames(CNA)) # proper syntactic names
 colnames(CNA) = paste0('CNA.', colnames(CNA)) # omic prefix for feature uniqueness
@@ -205,7 +207,7 @@ print(paste0('#features remained: ', length(CNA_task$feature_names)))
 
 ## miRNA ----
 print('miRNA')
-miRNA = readr::read_csv(file = 'PAAD/data/miRNA.csv', col_types = 'd')
+miRNA = readr::read_csv(file = paste0(disease_code, '/data/miRNA.csv'), col_types = 'd')
 
 colnames(miRNA) = make.names(colnames(miRNA)) # proper syntactic names
 colnames(miRNA) = paste0('miRNA.', colnames(miRNA)) # omic prefix for feature uniqueness
@@ -236,7 +238,7 @@ print(paste0('#features remained: ', length(miRNA_task$feature_names)))
 
 ## Methylation ----
 print('Methylation')
-Methyl = readr::read_csv(file = 'PAAD/data/methyl.csv', col_types = 'd')
+Methyl = readr::read_csv(file = paste0(disease_code, '/data/methyl.csv'), col_types = 'd')
 
 colnames(Methyl) = make.names(colnames(Methyl)) # proper syntactic names
 colnames(Methyl) = paste0('meth.', colnames(Methyl)) # omic prefix for feature uniqueness
@@ -272,4 +274,4 @@ tasks = list(
   CNA = CNA_task,
   Methyl = methyl_task
 )
-saveRDS(tasks, file = 'PAAD/data/tasks.rds')
+saveRDS(tasks, file = paste0(disease_code, '/data/tasks.rds'))
