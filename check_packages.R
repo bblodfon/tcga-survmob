@@ -6,7 +6,7 @@ package_info('mlr3', dependencies = F) # 0.15.0
 package_info('mlr3pipelines', dependencies = F) # 0.4.3
 package_info('mlr3tuning', dependencies = F) # 0.18.0
 package_info('paradox', dependencies = F) # 0.11.1
-package_info('mlr3mbo', dependencies = F) # 0.1.2
+package_info('mlr3mbo', dependencies = F) # 0.2.0@e1deed
 package_info('DiceKriging', dependencies = F) # 1.6.0
 package_info('mlr3filters', dependencies = F) # 0.7.1@c684ecf
 #' fixing `find_correlation` filter that couldn't be used with survival tasks
