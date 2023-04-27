@@ -91,6 +91,7 @@ run_analysis = function(disease_code, topn_vec) {
   set1_colors = RColorBrewer::brewer.pal(n = 3, name = 'Set1')
 
   sim_tbl %>%
+    #mutate(jaccard = zoo::rollmean(jaccard, k = 5, fill = NA)) %>%
     rename(Observed = jaccard, Expected = permut_jaccard) %>%
     pivot_longer(cols = 3:4) %>%
     mutate(name = factor(name, levels = c('Observed', 'Expected'))) %>%
