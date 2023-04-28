@@ -1,5 +1,6 @@
 library(survmob)
 library(mlr3verse)
+library(mlr3mbo)
 library(mlr3proba)
 library(progressr)
 
@@ -41,11 +42,11 @@ test_measure_ids = c('harrell_c', 'uno_c', 'ibrier_erv', 'rcll_erv', 'dcal')
 mob_uno = MOBenchmark$new(
   tasks = tasks, part = part,
   gen_task_powerset = FALSE,
-  lrn_ids = lrn_ids, nthreads_rsf = 20, nthreads_xgb = 6,
-  tune_measure_id = 'uno_c', tune_nevals = 50,
+  lrn_ids = lrn_ids, nthreads_rsf = 30, nthreads_xgb = 6,
+  tune_measure_id = 'uno_c', tune_nevals = 100,
   test_nrsmps = 100, test_workers = 20,
   test_measure_ids = test_measure_ids,
-  tune_rsmp = rsmp('holdout', ratio = 0.8),
+  tune_rsmp = rsmp('cv', folds = 5),
   quiet = FALSE, keep_models = TRUE
 )
 
@@ -53,9 +54,7 @@ mob_uno = MOBenchmark$new(
 mob_uno$run()
 
 # Save result object
-mob_uno$drop_tasks()
+#mob_uno$drop_tasks()
 saveRDS(mob_uno, file = paste0(bench_path, '/mob_uno.rds'))
-saveRDS(mob_uno$result, file = paste0(bench_path, '/mob_uno_result.rds'))
-
-mob_uno$drop_models()
-saveRDS(mob_uno$result, file = paste0(bench_path, '/mob_uno_result_no_models.rds'))
+mob_uno$drop_models() # reduce size by A lot :)
+saveRDS(mob_uno, file = paste0(bench_path, '/mob_uno_light.rds'))
