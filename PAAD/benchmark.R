@@ -41,7 +41,7 @@ test_measure_ids = c('harrell_c', 'uno_c', 'ibrier_erv', 'rcll_erv', 'dcal')
 # Create benchmark objects
 mob_uno = MOBenchmark$new(
   tasks = tasks, part = part,
-  gen_task_powerset = FALSE,
+  gen_task_powerset = TRUE,
   lrn_ids = lrn_ids, nthreads_rsf = 30, nthreads_xgb = 6,
   tune_measure_id = 'uno_c', tune_nevals = 100,
   test_nrsmps = 100, test_workers = 20,
