@@ -67,9 +67,7 @@ saveRDS(data_list, file = paste0(disease_code, '/efs/cindex_efs.rds'))
 # Measure: RCLL ----
 message('### RCLL ###')
 msr_id = 'rcll'
-rs = rsmp('cv', folds = 4)
-#' exclude `aorsf` for RCLL (C++ issues)
-lrn_ids = lrn_ids[lrn_ids != 'aorsf']
+rs = rsmp('cv', folds = 5)
 
 data_list = list()
 for (task in tasks) {
