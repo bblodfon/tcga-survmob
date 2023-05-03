@@ -19,7 +19,7 @@ tasks = readRDS(file = paste0(disease_code, '/data/tasks.rds'))
 part  = readRDS(file = paste0(disease_code, '/data/part.rds'))
 
 # eFS variables
-nthreads_rsf = 10
+nthreads_rsf = 30
 n_features = 5
 repeats = 100
 
