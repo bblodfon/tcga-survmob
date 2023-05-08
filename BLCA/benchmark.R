@@ -83,6 +83,6 @@ saveRDS(mob_uno, file = paste0(bench_path, '/mob_uno.rds'))
 
 ## Tuning: RCLL
 mob_rcll$run()
-saveRDS(mob_uno, file = paste0(bench_path, '/mob_rcll_full.rds'))
-mob_uno$drop_models() # reduce size by a lot :)
-saveRDS(mob_uno, file = paste0(bench_path, '/mob_rcll.rds'))
+saveRDS(mob_rcll, file = paste0(bench_path, '/mob_rcll_full.rds'))
+mob_rcll$drop_models() # reduce size by a lot :)
+saveRDS(mob_rcll, file = paste0(bench_path, '/mob_rcll.rds'))
