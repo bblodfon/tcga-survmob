@@ -23,7 +23,7 @@ options(progressr.enable = TRUE)
 handlers(global = TRUE)
 handlers('progress')
 
-# Tasks, stratify by status
+# Tasks (eFS optimizing C-index) + stratify by status
 tasks = readRDS(file = paste0(disease_code, '/data/tasks_cindex.rds'))
 for (task in tasks) task$col_roles$stratum = 'status'
 
