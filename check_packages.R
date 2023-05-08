@@ -24,3 +24,4 @@ package_info('ranger', dependencies = F) # 0.14.1
 package_info('CoxBoost', dependencies = F) # binderh/CoxBoost@1dc47d7
 package_info('aorsf', dependencies = F) # 0.0.7
 package_info('xgboost', dependencies = F) # 1.7.5.1
+package_info('rstanarm', dependencies = F) # 2.21.4
