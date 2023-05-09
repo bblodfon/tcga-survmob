@@ -3,3 +3,4 @@
 */data/*.csv
 other_cancer_types/
 *.tgz
+*/bench/*_full.rds
