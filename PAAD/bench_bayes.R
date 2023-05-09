@@ -89,6 +89,7 @@ for (msr_id in msr_ids) {
   # fit different model per omic
   model_list = list()
   for (omic in omics) {
+    message('### ', omic, ' ###')
     model = rstanarm::stan_glmer(
       data = df_sub,
       # MAIN FORMULA FOR PER OMIC IMPORTANCE (expected difference in
