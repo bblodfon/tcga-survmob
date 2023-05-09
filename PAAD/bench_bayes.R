@@ -82,7 +82,9 @@ omics = colnames(df)[grepl(pattern = 'omic', colnames(df))]
 for (msr_id in msr_ids) {
   message('\nMeasure: ', msr_id)
   df_sub = df %>%
-    filter(measure == msr_id)
+    filter(measure == msr_id) %>%
+    # reduce rsmp_ids to half for faster model fit
+    filter(rsmp_id %in% sample(1:nrsmps, nrsmps/2))
 
   # fit different model per omic
   model_list = list()
