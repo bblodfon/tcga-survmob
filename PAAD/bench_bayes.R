@@ -4,6 +4,7 @@ library(survmob)
 library(tidyverse)
 library(rstanarm)
 
+# TCGA study
 disease_code = 'PAAD'
 
 # Reproducibility
@@ -13,20 +14,24 @@ set.seed(seed)
 # Models tuned using Uno's C-index ----
 ## Benchmark data ----
 mob_uno = readRDS(file = paste0(disease_code, '/bench/mob_uno.rds'))
-cox = readRDS(file = paste0(disease_code, '/bench/cox.rds'))
+res = mob_uno$result
+# Doesn't make sense to use CoxPH model + clinical data results since
+# all the other learners have been tested across all omic combinations
+# cox = readRDS(file = paste0(disease_code, '/bench/cox.rds'))
 bench_path = paste0(disease_code, '/bench/mob_uno')
 dir.create(bench_path)
 
-# merge results
-res = dplyr::bind_rows(mob_uno$result, cox$result %>% select(!matches('model')))
-
 # some checks
-stopifnot(mob_uno$test_nrsmps == cox$test_nrsmps)
-stopifnot(mob_uno$test_measure_ids == cox$test_measure_ids)
 nrsmps = mob_uno$test_nrsmps
 msr_ids = mob_uno$test_measure_ids
+#' exclude `dcal` measure as it takes a extremely wide range of positive values
+#' and that creates the problem of not knowing how small is good enough and also
+#' negative values can be drawn from the posterior of the fitted Bayesian models
+#' which is not realistic
+msr_ids = msr_ids[msr_ids != 'dcal']
+message('Measures: ', paste0(msr_ids, collapse = ', '))
 task_ids = unname(mlr3misc::map_chr(mob_uno$tasks, `[[`, 'id'))
-print(task_ids) # for creating the omic columns
+message('Omics: ', paste0(task_ids, collapse = ', '))
 
 # reshape results
 df = res %>%
@@ -47,14 +52,6 @@ df = res %>%
   )
 #' `tibble` with a very general format of benchmarking results
 df
-
-# Inspect observed performance stats
-# df %>%
-#   filter(measure == 'harrell_c', task_id == 'Clinical') %>%
-#   #filter(measure == 'harrell_c') %>%
-#   group_by(lrn_id) %>%
-#   summarise(average = mean(value), std = sd(value)) %>%
-#   arrange(desc(average))
 
 ## Compare learners ----
 for (msr_id in msr_ids) {
