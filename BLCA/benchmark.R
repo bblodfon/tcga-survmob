@@ -35,7 +35,7 @@ lrn_ids = c('coxnet', 'rsf_cindex', 'rsf_logrank', 'rsf_maxstat',
   'rsf_extratrees', 'aorsf', 'coxboost', 'xgboost_cox_early', 'xgboost_aft_early')
 
 # Test Measures
-test_measure_ids = c('harrell_c', 'uno_c', 'ibrier_erv', 'rcll_erv', 'dcal')
+test_measure_ids = c('harrell_c', 'uno_c', 'ibrier_erv', 'rcll_erv')
 
 # Create benchmark objects
 cox = MOBenchmark$new(
