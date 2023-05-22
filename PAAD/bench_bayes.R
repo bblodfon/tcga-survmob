@@ -1,5 +1,6 @@
 #' Bayesian Analysis of Benchmarking Results
 #' => Fit Bayesian linear mixed-effects models
+#' => Comparing models and omics
 library(survmob)
 library(tidyverse)
 library(rstanarm)
@@ -12,6 +13,8 @@ seed = 42
 set.seed(seed)
 
 # Models tuned using Uno's C-index ----
+message('Uno\'s C-index')
+
 ## Benchmark data ----
 mob_uno = readRDS(file = paste0(disease_code, '/bench/mob_uno.rds'))
 res = mob_uno$result
@@ -105,6 +108,8 @@ for (msr_id in msr_ids) {
 }
 
 # Models tuned using RCLL ----
+message('RCLL')
+
 ## Benchmark data ----
 mob_rcll = readRDS(file = paste0(disease_code, '/bench/mob_rcll.rds'))
 res = mob_rcll$result
