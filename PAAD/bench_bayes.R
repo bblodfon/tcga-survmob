@@ -18,8 +18,8 @@ res = mob_uno$result
 # Doesn't make sense to use CoxPH model + clinical data results since
 # all the other learners have been tested across all omic combinations
 # cox = readRDS(file = paste0(disease_code, '/bench/cox.rds'))
-bench_path = paste0(disease_code, '/bench/mob_uno')
-dir.create(bench_path)
+bench_path_uno = paste0(disease_code, '/bench/mob_uno')
+dir.create(bench_path_uno)
 
 # some checks
 nrsmps = mob_uno$test_nrsmps
@@ -35,14 +35,14 @@ message('Omics: ', paste0(task_ids, collapse = ', '))
 
 # reshape results
 df = res %>%
-  mutate(scores = map(boot_res, 'scores')) %>%
+  mutate(scores = purrr::map(boot_res, 'scores')) %>%
   select(!matches('boot_res')) %>%
   tibble::add_column(id = list(tibble(rsmp_id = 1:nrsmps))) %>%
   tidyr::unnest(cols = c(id, scores)) %>%
   dplyr::relocate(rsmp_id, .after = lrn_id) %>%
   tidyr::pivot_longer(cols = !matches('task_id|lrn_id|rsmp_id'),
     names_to = 'measure', values_to = 'value') %>%
-  # One-hot encoded each omic to separate column
+  # One-hot encode each omic to a separate column
   mutate(
     Clinical_omic = as.integer(str_detect(task_id, 'Clinical')),
     mRNA_omic = as.integer(str_detect(task_id, 'mRNA')),
@@ -67,10 +67,9 @@ for (msr_id in msr_ids) {
     chains = 4, cores = 4, iter = 5000, seed = seed
   )
 
-  saveRDS(object = model,
-    #' `mob_uno` => tuning by optimizing Uno's C-index
-    #' `msr_id`  => which test measure we use to compare the models
-    file = paste0(disease_code, '/bench/mob_uno/stan_glmer_', msr_id, '.rds')
+  saveRDS(
+    object = model,
+    file = paste0(bench_path_uno, '/stan_glmer_', msr_id, '.rds')
   )
 }
 
@@ -99,9 +98,98 @@ for (msr_id in msr_ids) {
     model_list[[omic]] = model
   }
 
-  saveRDS(object = model_list,
-    #' `mob_uno` => tuning by optimizing Uno's C-index
-    #' `msr_id`  => which test measure we used
-    file = paste0(disease_code, '/bench/mob_uno/omic_fit_', msr_id, '.rds')
+  saveRDS(
+    object = model_list,
+    file = paste0(bench_path_uno, '/omic_fit_', msr_id, '.rds')
+  )
+}
+
+# Models tuned using RCLL ----
+## Benchmark data ----
+mob_rcll = readRDS(file = paste0(disease_code, '/bench/mob_rcll.rds'))
+res = mob_rcll$result
+bench_path_rcll = paste0(disease_code, '/bench/mob_rcll')
+dir.create(bench_path_rcll)
+
+# some checks
+nrsmps = mob_rcll$test_nrsmps
+msr_ids = mob_rcll$test_measure_ids
+#' exclude `dcal` measure as it takes a extremely wide range of positive values
+#' and that creates the problem of not knowing how small is good enough and also
+#' negative values can be drawn from the posterior of the fitted Bayesian models
+#' which is not realistic
+msr_ids = msr_ids[msr_ids != 'dcal']
+message('Measures: ', paste0(msr_ids, collapse = ', '))
+task_ids = unname(mlr3misc::map_chr(mob_rcll$tasks, `[[`, 'id'))
+message('Omics: ', paste0(task_ids, collapse = ', '))
+
+# reshape results
+df = res %>%
+  mutate(scores = purrr::map(boot_res, 'scores')) %>%
+  select(!matches('boot_res')) %>%
+  tibble::add_column(id = list(tibble(rsmp_id = 1:nrsmps))) %>%
+  tidyr::unnest(cols = c(id, scores)) %>%
+  dplyr::relocate(rsmp_id, .after = lrn_id) %>%
+  tidyr::pivot_longer(cols = !matches('task_id|lrn_id|rsmp_id'),
+    names_to = 'measure', values_to = 'value') %>%
+  # One-hot encode each omic to a separate column
+  mutate(
+    Clinical_omic = as.integer(str_detect(task_id, 'Clinical')),
+    mRNA_omic = as.integer(str_detect(task_id, 'mRNA')),
+    miRNA_omic = as.integer(str_detect(task_id, 'miRNA')),
+    CNA_omic = as.integer(str_detect(task_id, 'CNA')),
+    Methyl_omic = as.integer(str_detect(task_id, 'Methyl'))
+  )
+#' `tibble` with a very general format of benchmarking results
+df
+
+## Compare learners ----
+for (msr_id in msr_ids) {
+  message('\nMeasure: ', msr_id)
+  df_sub = df %>%
+    filter(measure == msr_id) %>%
+    select(!matches('.*omic')) # remove the one-hot encoded omic columns
+
+  model = rstanarm::stan_glmer(
+    data = df_sub,
+    # MAIN FORMULA FOR MODEL COMPARISON
+    formula = value ~ -1 + lrn_id + (1 | task_id/rsmp_id),
+    chains = 4, cores = 4, iter = 5000, seed = seed
+  )
+
+  saveRDS(
+    object = model,
+    file = paste0(bench_path_rcll, '/stan_glmer_', msr_id, '.rds')
+  )
+}
+
+## Omic importance ----
+omics = colnames(df)[grepl(pattern = 'omic', colnames(df))]
+for (msr_id in msr_ids) {
+  message('\nMeasure: ', msr_id)
+  df_sub = df %>%
+    filter(measure == msr_id) %>%
+    # reduce rsmp_ids to half for faster model fit
+    filter(rsmp_id %in% sample(1:nrsmps, nrsmps/2))
+
+  # fit different model per omic
+  model_list = list()
+  for (omic in omics) {
+    message('### ', omic, ' ###')
+    model = rstanarm::stan_glmer(
+      data = df_sub,
+      # MAIN FORMULA FOR PER OMIC IMPORTANCE (expected difference in
+      # performance with vs without that omic)
+      formula = as.formula(paste0('value ~ ', omic,
+        ' + (1 | lrn_id) + (1 | task_id/rsmp_id)')),
+      chains = 4, cores = 4, iter = 5000, seed = seed
+    )
+
+    model_list[[omic]] = model
+  }
+
+  saveRDS(
+    object = model_list,
+    file = paste0(bench_path_rcll, '/omic_fit_', msr_id, '.rds')
   )
 }
