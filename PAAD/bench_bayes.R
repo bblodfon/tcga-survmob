@@ -1,16 +1,23 @@
 #' Bayesian Analysis of Benchmarking Results
 #' => Fit Bayesian linear mixed-effects models
-#' => Comparing models and omics
+#' => Compare models and omics
+#' => Run in parallel
+#' => Execute: `Rscript PAAD/bench_bayes.R`
 library(survmob)
 library(tidyverse)
 library(rstanarm)
+library(future.apply)
 
 # TCGA study
 disease_code = 'PAAD'
 
 # Reproducibility
 seed = 42
-set.seed(seed)
+
+# Parallelization
+plan('multicore', workers = 4) # across performance metrics
+n_chains = 4 # across MCMC chains
+n_cores = 4
 
 # Models tuned using Uno's C-index ----
 message('Uno\'s C-index')
@@ -57,8 +64,11 @@ df = res %>%
 df
 
 ## Compare learners ----
-for (msr_id in msr_ids) {
-  message('\nMeasure: ', msr_id)
+y = future.apply::future_lapply(1:length(msr_ids), function(i) {
+  set.seed(i)
+  msr_id = msr_ids[i]
+  #message('Measure: ', msr_id)
+
   df_sub = df %>%
     filter(measure == msr_id) %>%
     select(!matches('.*omic'))
@@ -67,19 +77,23 @@ for (msr_id in msr_ids) {
     data = df_sub,
     # MAIN FORMULA FOR MODEL COMPARISON
     formula = value ~ -1 + lrn_id + (1 | task_id/rsmp_id),
-    chains = 4, cores = 4, iter = 5000, seed = seed
+    chains = n_chains, cores = n_cores, iter = 5000, seed = seed
   )
 
   saveRDS(
     object = model,
     file = paste0(bench_path_uno, '/stan_glmer_', msr_id, '.rds')
   )
-}
+}, future.seed = TRUE)
 
 ## Omic importance ----
 omics = colnames(df)[grepl(pattern = 'omic', colnames(df))]
-for (msr_id in msr_ids) {
-  message('\nMeasure: ', msr_id)
+
+y = future.apply::future_lapply(1:length(msr_ids), function(i) {
+  set.seed(i)
+  msr_id = msr_ids[i]
+  #message('Measure: ', msr_id)
+
   df_sub = df %>%
     filter(measure == msr_id) %>%
     # reduce rsmp_ids to half for faster model fit
@@ -95,7 +109,7 @@ for (msr_id in msr_ids) {
       # performance with vs without that omic)
       formula = as.formula(paste0('value ~ ', omic,
         ' + (1 | lrn_id) + (1 | task_id/rsmp_id)')),
-      chains = 4, cores = 4, iter = 5000, seed = seed
+      chains = n_chains, cores = n_cores, iter = 5000, seed = seed
     )
 
     model_list[[omic]] = model
@@ -105,7 +119,7 @@ for (msr_id in msr_ids) {
     object = model_list,
     file = paste0(bench_path_uno, '/omic_fit_', msr_id, '.rds')
   )
-}
+}, future.seed = TRUE)
 
 # Models tuned using RCLL ----
 message('RCLL')
@@ -149,8 +163,11 @@ df = res %>%
 df
 
 ## Compare learners ----
-for (msr_id in msr_ids) {
-  message('\nMeasure: ', msr_id)
+y = future.apply::future_lapply(1:length(msr_ids), function(i) {
+  set.seed(i)
+  msr_id = msr_ids[i]
+  #message('Measure: ', msr_id)
+
   df_sub = df %>%
     filter(measure == msr_id) %>%
     select(!matches('.*omic')) # remove the one-hot encoded omic columns
@@ -159,19 +176,24 @@ for (msr_id in msr_ids) {
     data = df_sub,
     # MAIN FORMULA FOR MODEL COMPARISON
     formula = value ~ -1 + lrn_id + (1 | task_id/rsmp_id),
-    chains = 4, cores = 4, iter = 5000, seed = seed
+    chains = n_chains, cores = n_cores, iter = 5000, seed = seed
   )
 
+  # save model
   saveRDS(
     object = model,
     file = paste0(bench_path_rcll, '/stan_glmer_', msr_id, '.rds')
   )
-}
+}, future.seed = TRUE)
 
 ## Omic importance ----
 omics = colnames(df)[grepl(pattern = 'omic', colnames(df))]
-for (msr_id in msr_ids) {
-  message('\nMeasure: ', msr_id)
+
+y = future.apply::future_lapply(1:length(msr_ids), function(i) {
+  set.seed(i)
+  msr_id = msr_ids[i]
+  #message('Measure: ', msr_id)
+
   df_sub = df %>%
     filter(measure == msr_id) %>%
     # reduce rsmp_ids to half for faster model fit
@@ -187,14 +209,15 @@ for (msr_id in msr_ids) {
       # performance with vs without that omic)
       formula = as.formula(paste0('value ~ ', omic,
         ' + (1 | lrn_id) + (1 | task_id/rsmp_id)')),
-      chains = 4, cores = 4, iter = 5000, seed = seed
+      chains = n_chains, cores = n_cores, iter = 5000, seed = seed
     )
 
     model_list[[omic]] = model
   }
 
+  # save model
   saveRDS(
     object = model_list,
     file = paste0(bench_path_rcll, '/omic_fit_', msr_id, '.rds')
   )
-}
+}, future.seed = TRUE)
