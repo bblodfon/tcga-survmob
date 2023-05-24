@@ -90,7 +90,7 @@ y = future.apply::future_lapply(1:length(msr_ids), function(i) {
 omics = colnames(df)[grepl(pattern = 'omic', colnames(df))]
 
 y = future.apply::future_lapply(1:length(msr_ids), function(i) {
-  set.seed(i)
+  set.seed(seed)
   msr_id = msr_ids[i]
   #message('Measure: ', msr_id)
 
@@ -190,7 +190,7 @@ y = future.apply::future_lapply(1:length(msr_ids), function(i) {
 omics = colnames(df)[grepl(pattern = 'omic', colnames(df))]
 
 y = future.apply::future_lapply(1:length(msr_ids), function(i) {
-  set.seed(i)
+  set.seed(seed)
   msr_id = msr_ids[i]
   #message('Measure: ', msr_id)
 
