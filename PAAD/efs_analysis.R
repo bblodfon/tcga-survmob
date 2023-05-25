@@ -48,10 +48,16 @@ for (efs in cindex_efs) {
     width = 5, height = 5, units = 'in', dpi = 300)
 
   #' Performance
-  efs$res_plot(type = 'perf', msr_label = 'OOB (1 - C-index)', title = omic_name) +
+  efs$result %>%
+    mutate(score = 1 - score) %>%
+    ggplot(aes(x = lrn_id, y = score, fill = lrn_id)) +
+    geom_boxplot() +
+    labs(y = 'Harrell\'s C-index', x = NULL, title = omic_name) +
     guides(x = guide_axis(angle = 45)) +
     scale_fill_manual(values = my_colors, breaks = names(my_labels)) +
-    scale_x_discrete(labels = my_labels) # change model names on x-axis
+    scale_x_discrete(labels = my_labels) + # change model names on x-axis
+    theme_bw(base_size = 14) +
+    theme(plot.title = element_text(hjust = 0.5), legend.position = 'none')
   ggsave(filename = paste0(cindex_path, '/', omic, '_perf.png'),
     width = 5, height = 6, units = 'in', dpi = 300)
 
