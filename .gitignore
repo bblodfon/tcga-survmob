@@ -4,3 +4,4 @@
 other_cancer_types/
 *.tgz
 */bench/*_full.rds
+*/bench/*/*.rds
