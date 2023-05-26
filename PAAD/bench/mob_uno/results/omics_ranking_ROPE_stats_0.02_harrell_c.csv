@@ -1,0 +1,6 @@
+omic,prob_no_diff,prob_positive_diff,prob_negative_diff
+Clinical,0.1141,0.8858,1e-4
+mRNA,0.4866,0.499,0.0144
+CNA,0.5235,0.0143,0.4622
+miRNA,0.1661,9e-4,0.833
+Methylation,0.0166,0,0.9834
