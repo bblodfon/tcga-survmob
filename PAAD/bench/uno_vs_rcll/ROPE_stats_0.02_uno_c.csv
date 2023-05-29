@@ -1,0 +1,10 @@
+model,prob_no_diff,prob_positive_diff,prob_negative_diff
+CoxNet,0.7701,0.1914,0.0385
+AORSF,0.8096,0.1242,0.0662
+CoxBoost,0.8053,0.1254,0.0693
+RSF (C-index),0.8092,0.0716,0.1192
+RSF (Logrank),0.8115,0.07,0.1185
+XGBoost (Cox),0.8022,0.0576,0.1402
+RSF (Maxstat),0.7595,0.0337,0.2068
+RSF (ExtraTrees),0.3183,0.0012,0.6805
+XGBoost (AFT),0.1633,6e-4,0.8361
