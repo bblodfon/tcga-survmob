@@ -188,11 +188,11 @@ omics_postdiff_draw = function(model_list, seed = seed) {
 #'
 #' @param post_draws a `tibble` with 2 columns: a factor variable that has
 #' **ordered groups** (e.g. model names or omic names for example) and a
-#' second column that has the posterior distribution draws corresponding to each
-#' group.
+#' second column that has the posterior distribution draws corresponding
+#' to each group.
 #' @param title title of the plot
 #' @param subtitle subtitle of the plot
-#' @param x_axis_label x-axis label (e.g. performance measure).
+#' @param x_axis_label x-axis label (e.g. performance measure)
 #' @param size practical effect size for ROPE (Region of Practical Equivalence).
 #' Default is 0.02.
 #' @param ROPE_center The center of the ROPE region.
@@ -208,8 +208,26 @@ omics_postdiff_draw = function(model_list, seed = seed) {
 #' Another palette choice is `viridis` (nicer for 5+ groups, not consistent
 #' across different group ordering).
 #' You can also pass any color you may want, e.g. `lightblue` or `#A6CEE3`.
+#' @param rope_stats output from `rope_stats()` function using the same inputs
+#' as here: `post_draws`, `size` and `ROPE_center`.
+#' @param add_right add the right ROPE probabilities per group as extra text
+#' annotations
+#' @param add_left add the left ROPE probabilities per group as extra text
+#' annotations
+#' @param x_right designate the place on the x-axis to add the right ROPE
+#' probabilities.
+#' If NULL, the maximum posterior value is used.
+#' @param x_left designate the place on the x-axis to add the left ROPE
+#' probabilities.
+#' If NULL, the minimum posterior value is used.
+#' @param label_right title for the right ROPE text annotation.
+#' Default: **PPPD** => Posterior Probability of Positive Practical Difference
+#' @param label_left title for the left ROPE text annotation.
+#' Default: **PNPD** => Posterior Probability of Negative Practical Difference
 ridgeline_plot = function(post_draws, title = '', subtitle = '', x_axis_label = '',
-  size = 0.02, ROPE_center = 0, ROPE_area = TRUE, draw_arrow = TRUE, pal = 'hue'
+  size = 0.02, ROPE_center = 0, ROPE_area = TRUE, draw_arrow = TRUE, pal = 'hue',
+  rope_stats = NULL, add_right = FALSE, add_left = FALSE,
+  x_right = NULL, x_left = NULL, label_right = 'PPPD', label_left = 'PNPD'
 ) {
   grp_var = colnames(post_draws)[1]
   post_var = colnames(post_draws)[2]
@@ -221,9 +239,7 @@ ridgeline_plot = function(post_draws, title = '', subtitle = '', x_axis_label = 
     p = post_draws %>%
       ggplot(aes(y = .data[[grp_var]], x = .data[[post_var]],
         fill = .data[[grp_var]],
-        # fill_ramp = after_stat(abs(x) > size)))
         fill_ramp = after_stat(abs(x - ROPE_center) > size)))
-        #fill_ramp = after_stat(x > ROPE_center + size & x < -(ROPE_center + size)))
   } else {
     p = post_draws %>%
       ggplot(aes(y = .data[[grp_var]], x = .data[[post_var]]),
@@ -293,6 +309,53 @@ ridgeline_plot = function(post_draws, title = '', subtitle = '', x_axis_label = 
         annotate(
           geom = 'text', label = size,
           x = size/2, y = n_grps + 0.25
+        )
+    }
+  }
+
+  # add ROPE probabilities as extra text annotations
+  if (!is.null(rope_stats)) {
+    #' compute `x_right` and `x_left` if not given
+    if (is.null(x_right)) {
+      x_right = max(post_draws[[post_var]])
+    }
+    if (is.null(x_left)) {
+      x_left = min(post_draws[[post_var]])
+    }
+
+    for (index in 1:nrow(rope_stats)) {
+      if (add_right) {
+        prob_right = rope_stats[index, 'prob_right']
+        p = p +
+          annotate(
+            geom = 'text', label = paste0(round(prob_right*100), '%'),
+            x = x_right, y = index + 0.5
+          )
+      }
+      if (add_left) {
+        prob_left  = rope_stats[index, 'prob_left']
+        p = p +
+          annotate(
+            geom = 'text', label = paste0(round(prob_left*100), '%'),
+            x = x_left, y = index + 0.5
+          )
+      }
+    }
+
+    # add labels to the ROPE probabilities annotations
+    if (add_right) {
+      p = p +
+        annotate(
+          geom = 'text', label = label_right, color = '#4DAF4A', fontface = 2,
+          x = x_right, y = index + 1.4
+        )
+    }
+
+    if (add_left) {
+      p = p +
+        annotate(
+          geom = 'text', label = label_left, color = '#E41A1C', fontface = 2,
+          x = x_left, y = index + 1.4
         )
     }
   }
