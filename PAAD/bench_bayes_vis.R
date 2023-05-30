@@ -780,7 +780,7 @@ ggsave(file = paste0(res_path_rcll, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
 # Uno's C vs RCLL ----
-message('### Uno\'s C vs RCLL runing comparison')
+message('### Uno\'s C vs RCLL tuning comparison')
 
 ## Get posterior differences ----
 #' Compare model posterior distribution performance across test metrics, with
