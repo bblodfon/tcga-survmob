@@ -368,9 +368,12 @@ ridgeline_plot = function(post_draws, title = '', subtitle = '', x_axis_label = 
 #' distribution per group
 #'
 #' @return a tibble with 4 columns: the grouping variable, and 3 probabilities:
-#' - `prob_within`: distribution area within the ROPE region
-#' - `prob_right`: distribution area to the right of ROPE
-#' - `prob_left`: distribution area to the left of ROPE
+#' - `prob_within`: the integral of the posterior within the ROPE region
+#' (-size, size)
+#' - `prob_right`: the integral of the posterior to the right of the ROPE
+#' (size, Inf)
+#' - `prob_left`: the integral of the posterior to the left of the ROPE
+#' (-Inf, -size)
 #'
 #' @param post_draws a `tibble` with 2 columns: a factor variable that has
 #' **groups** (e.g. model names or omic names for example) and a
