@@ -1,4 +1,4 @@
-omic,prob_no_diff,prob_positive_diff,prob_negative_diff
+omic,prob_within,prob_right,prob_left
 mRNA,0.0651,0.9285,0.0064
 Clinical,0.0895,0.8993,0.0112
 Methylation,0.3439,0.1433,0.5128

@@ -1,4 +1,4 @@
-omic,prob_no_diff,prob_positive_diff,prob_negative_diff
+omic,prob_within,prob_right,prob_left
 Clinical,0.9998,1e-4,1e-4
 mRNA,0.9996,0,4e-4
 miRNA,0.9999,0,1e-4

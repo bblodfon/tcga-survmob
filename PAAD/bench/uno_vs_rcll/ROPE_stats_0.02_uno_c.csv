@@ -1,4 +1,4 @@
-model,prob_no_diff,prob_positive_diff,prob_negative_diff
+model,prob_within,prob_right,prob_left
 CoxNet,0.7701,0.1914,0.0385
 AORSF,0.8096,0.1242,0.0662
 CoxBoost,0.8053,0.1254,0.0693
