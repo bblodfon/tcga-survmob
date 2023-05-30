@@ -832,64 +832,70 @@ size = 0.02
 
 for(msr_id in names(res)) {
   if (msr_id == 'harrell_c') { # Harrell's C-index
+    message('# Measure: ', msr_id)
+    rs = rope_stats(post_draws = res[[msr_id]], size = size)
+    write_csv(rs, file = paste0(res_path_cmp, '/ROPE_stats_' ,
+      size, '_', msr_id, '.csv'))
+
     ridgeline_plot(post_draws = res[[msr_id]],
       title = 'Posterior Distribution Differences',
       subtitle = 'Uno\'s C-index vs RCLL',
       x_axis_label = 'Difference in Harrell\'s C-index',
-      ROPE_area = TRUE, draw_arrow = TRUE, size = size, pal = 'viridis')
+      ROPE_area = TRUE, draw_arrow = TRUE, size = size, pal = 'viridis',
+      rope_stats = rs, add_right = T, add_left = T)
     ggsave(file = paste0(res_path_cmp, '/' , msr_id, '.png'),
       units = 'in', width = 7, height = 5, dpi = 300)
-
-    stats = rope_stats(post_draws = res[[msr_id]], size = size)
-    write_csv(stats, file = paste0(res_path_cmp, '/ROPE_stats_' ,
-      size, '_', msr_id, '.csv'))
   } else if (msr_id == 'uno_c') { # Uno's C-index
+    message('# Measure: ', msr_id)
+    rs = rope_stats(post_draws = res[[msr_id]], size = size)
+    write_csv(rs, file = paste0(res_path_cmp, '/ROPE_stats_' ,
+      size, '_', msr_id, '.csv'))
+
     ridgeline_plot(post_draws = res[[msr_id]],
       title = 'Posterior Distribution Differences',
       subtitle = 'Uno\'s C-index vs RCLL',
       x_axis_label = 'Difference in Uno\'s C-index',
-      ROPE_area = TRUE, draw_arrow = TRUE, size = size, pal = 'viridis')
+      ROPE_area = TRUE, draw_arrow = TRUE, size = size, pal = 'viridis',
+      rope_stats = rs, add_right = T, add_left = T)
     ggsave(file = paste0(res_path_cmp, '/' , msr_id, '.png'),
       units = 'in', width = 7, height = 5, dpi = 300)
-
-    stats = rope_stats(post_draws = res[[msr_id]], size = size)
-    write_csv(stats, file = paste0(res_path_cmp, '/ROPE_stats_' ,
-      size, '_', msr_id, '.csv'))
   } else if (msr_id == 'ibrier_erv') { # IBS (ERV)
+    message('# Measure: ', msr_id)
+    rs = rope_stats(post_draws = res[[msr_id]], size = size)
+    write_csv(rs, file = paste0(res_path_cmp, '/ROPE_stats_' ,
+      size, '_', msr_id, '.csv'))
+
     ridgeline_plot(post_draws = res[[msr_id]],
       title = 'Posterior Distribution Differences',
       subtitle = 'Uno\'s C-index vs RCLL',
       x_axis_label = 'Difference in IBS (ERV)',
-      ROPE_area = TRUE, draw_arrow = FALSE, size = size, pal = 'viridis')
+      ROPE_area = TRUE, draw_arrow = FALSE, size = size, pal = 'viridis',
+      rope_stats = rs, add_right = T, add_left = T,
+      x_right = 0.25, x_left = -0.25)
     ggsave(file = paste0(res_path_cmp, '/' , msr_id, '.png'),
       units = 'in', width = 7, height = 5, dpi = 300)
-
-    stats = rope_stats(post_draws = res[[msr_id]], size = size)
-    write_csv(stats, file = paste0(res_path_cmp, '/ROPE_stats_' ,
-      size, '_', msr_id, '.csv'))
   } else if (msr_id == 'rcll_erv') { # RCLL (ERV)
-    # change difference to: RCLL - Uno-C (only for figure)
-    pds = res[[msr_id]] %>% mutate(post_diff = -post_diff)
+    message('# Measure: ', msr_id)
+    rs = rope_stats(post_draws = res[[msr_id]], size = size)
+    write_csv(rs, file = paste0(res_path_cmp, '/ROPE_stats_' ,
+      size, '_', msr_id, '.csv'))
 
-    ridgeline_plot(post_draws = pds,
+    ridgeline_plot(post_draws = res[[msr_id]],
       title = 'Posterior Distribution Differences',
-      subtitle = 'RCLL vs Uno\'s C-index', # changed this as well
+      subtitle = 'Uno\'s C-index vs RCLL',
       x_axis_label = 'Difference in RCLL (ERV)',
-      ROPE_area = TRUE, draw_arrow = TRUE, size = size, pal = 'viridis') +
-      xlim(c(-0.06, 0.06)) +
+      ROPE_area = TRUE, draw_arrow = TRUE, size = size, pal = 'viridis',
+      rope_stats = rs, add_left = T, x_left = -0.05, label_left = '') +
+      xlim(c(-0.06, 0.04)) +
       # add arrows to show that distribution is more to the right
       annotate(
         geom = 'segment',
-        x = 0.055, xend = 0.055,
+        x = -0.06, xend = -0.06,
         y = 9, yend = 9, # 9th learner
         linewidth = 0.7,
         arrow = arrow(ends = 'both', length = unit(0.1, 'in'))
       )
     ggsave(file = paste0(res_path_cmp, '/' , msr_id, '.png'),
       units = 'in', width = 7, height = 5, dpi = 300)
-
-    stats = rope_stats(post_draws = res[[msr_id]], size = size)
-    write_csv(stats, file = paste0(res_path_cmp, '/ROPE_stats_' ,
-      size, '_', msr_id, '.csv'))
   }
 }
