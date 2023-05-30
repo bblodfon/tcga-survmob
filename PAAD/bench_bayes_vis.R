@@ -538,8 +538,8 @@ ridgeline_plot(post_draws = omics_postdiff_draws_uno[[msr_id]],
 ggsave(file = paste0(res_path_uno, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
-stats = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size)
-write_csv(stats, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
+rs = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size)
+write_csv(rs, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
   size, '_', msr_id, '.csv'))
 
 # Uno's C-index
@@ -552,8 +552,8 @@ ridgeline_plot(post_draws = omics_postdiff_draws_uno[[msr_id]],
 ggsave(file = paste0(res_path_uno, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
-stats = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size)
-write_csv(stats, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
+rs = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size)
+write_csv(rs, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
   size, '_', msr_id, '.csv'))
 
 # IBS (ERV)
@@ -566,8 +566,8 @@ ridgeline_plot(post_draws = omics_postdiff_draws_uno[[msr_id]],
 ggsave(file = paste0(res_path_uno, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
-stats = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size)
-write_csv(stats, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
+rs = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size)
+write_csv(rs, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
   size, '_', msr_id, '.csv'))
 
 # RCLL (ERV)
@@ -581,8 +581,8 @@ ridgeline_plot(post_draws = omics_postdiff_draws_uno[[msr_id]],
 ggsave(file = paste0(res_path_uno, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
-stats = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size2)
-write_csv(stats, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
+rs = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size2)
+write_csv(rs, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
   size2, '_', msr_id, '.csv'))
 
 # RCLL ----
@@ -725,8 +725,8 @@ ridgeline_plot(post_draws = omics_postdiff_draws_rcll[[msr_id]],
 ggsave(file = paste0(res_path_rcll, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
-stats = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size)
-write_csv(stats, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
+rs = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size)
+write_csv(rs, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
   size, '_', msr_id, '.csv'))
 
 # Uno's C-index
@@ -739,8 +739,8 @@ ridgeline_plot(post_draws = omics_postdiff_draws_rcll[[msr_id]],
 ggsave(file = paste0(res_path_rcll, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
-stats = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size)
-write_csv(stats, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
+rs = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size)
+write_csv(rs, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
   size, '_', msr_id, '.csv'))
 
 # IBS (ERV)
@@ -766,8 +766,8 @@ ridgeline_plot(post_draws = omics_postdiff_draws_rcll[[msr_id]],
 ggsave(file = paste0(res_path_rcll, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
-stats = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size)
-write_csv(stats, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
+rs = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size)
+write_csv(rs, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
   size, '_', msr_id, '.csv'))
 
 # RCLL (ERV)
@@ -781,8 +781,8 @@ ridgeline_plot(post_draws = omics_postdiff_draws_rcll[[msr_id]],
 ggsave(file = paste0(res_path_rcll, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
-stats = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size2)
-write_csv(stats, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
+rs = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size2)
+write_csv(rs, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
   size2, '_', msr_id, '.csv'))
 
 # Uno's C vs RCLL ----
