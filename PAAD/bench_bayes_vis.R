@@ -802,7 +802,7 @@ for(msr_id in names(res)) {
     write_csv(stats, file = paste0(res_path_cmp, '/ROPE_stats_' ,
       size, '_', msr_id, '.csv'))
   } else if (msr_id == 'rcll_erv') { # RCLL (ERV)
-    # change difference to: RCLL - Uno-C
+    # change difference to: RCLL - Uno-C (only for figure)
     pds = res[[msr_id]] %>% mutate(post_diff = -post_diff)
 
     ridgeline_plot(post_draws = pds,
@@ -822,7 +822,7 @@ for(msr_id in names(res)) {
     ggsave(file = paste0(res_path_cmp, '/' , msr_id, '.png'),
       units = 'in', width = 7, height = 5, dpi = 300)
 
-    stats = rope_stats(post_draws = pds, size = size)
+    stats = rope_stats(post_draws = res[[msr_id]], size = size)
     write_csv(stats, file = paste0(res_path_cmp, '/ROPE_stats_' ,
       size, '_', msr_id, '.csv'))
   }
