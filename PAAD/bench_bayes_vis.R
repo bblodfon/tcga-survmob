@@ -305,9 +305,9 @@ ridgeline_plot = function(post_draws, title = '', subtitle = '', x_axis_label = 
 #' distribution per group
 #'
 #' @return a tibble with 4 columns: the grouping variable, and 3 probabilities:
-#' - `prob_no_diff`: distribution area within the ROPE region
-#' - `prob_positive_diff`: distribution area to the right of ROPE
-#' - `prob_negative_diff`: distribution area to the left of ROPE
+#' - `prob_within`: distribution area within the ROPE region
+#' - `prob_right`: distribution area to the right of ROPE
+#' - `prob_left`: distribution area to the left of ROPE
 #'
 #' @param post_draws a `tibble` with 2 columns: a factor variable that has
 #' **groups** (e.g. model names or omic names for example) and a
@@ -318,13 +318,14 @@ ridgeline_plot = function(post_draws, title = '', subtitle = '', x_axis_label = 
 #' Default is 0 which means that the posterior draws are distribution differences.
 rope_stats = function(post_draws, size = 0.02, ROPE_center = 0) {
   grp_var = colnames(post_draws)[1]
+  post_var = colnames(post_draws)[2]
 
   post_draws %>%
     group_by(!!rlang::sym(grp_var)) %>%
     summarise(
-      prob_no_diff = mean(abs(post_diff - ROPE_center) <= size),
-      prob_positive_diff = mean(post_diff > ROPE_center + size),
-      prob_negative_diff = mean(post_diff < ROPE_center - size)
+      prob_within = mean(abs(!!rlang::sym(post_var) - ROPE_center) <= size),
+      prob_right  = mean(!!rlang::sym(post_var) > ROPE_center + size),
+      prob_left   = mean(!!rlang::sym(post_var) < ROPE_center - size)
     )
 }
 
