@@ -530,60 +530,64 @@ size = 0.02
 
 # Harrell's C-index
 msr_id = unique(omics_postdiff_draws_uno$harrell_c$msr_id)
+rs = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size)
+write_csv(rs, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
+  size, '_', msr_id, '.csv'))
+
 ridgeline_plot(post_draws = omics_postdiff_draws_uno[[msr_id]],
   title = 'Posterior Distribution Differences',
   subtitle = 'With vs without an omic',
   x_axis_label = 'Difference in Harrell\'s C-index',
-  size = size, ROPE_area = T, draw_arrow = T, pal = 'hue')
+  size = size, ROPE_area = T, draw_arrow = T, pal = 'hue',
+  rope_stats = rs, add_right = T, add_left = T)
 ggsave(file = paste0(res_path_uno, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
+# Uno's C-index
+msr_id = unique(omics_postdiff_draws_uno$uno_c$msr_id)
 rs = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size)
 write_csv(rs, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
   size, '_', msr_id, '.csv'))
 
-# Uno's C-index
-msr_id = unique(omics_postdiff_draws_uno$uno_c$msr_id)
 ridgeline_plot(post_draws = omics_postdiff_draws_uno[[msr_id]],
   title = 'Posterior Distribution Differences',
   subtitle = 'With vs without an omic',
   x_axis_label = 'Difference in Uno\'s C-index',
-  size = size, ROPE_area = T, draw_arrow = T, pal = 'hue')
+  size = size, ROPE_area = T, draw_arrow = T, pal = 'hue',
+  rope_stats = rs, add_right = T, add_left = T)
 ggsave(file = paste0(res_path_uno, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
+# IBS (ERV)
+msr_id = unique(omics_postdiff_draws_uno$ibrier_erv$msr_id)
 rs = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size)
 write_csv(rs, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
   size, '_', msr_id, '.csv'))
 
-# IBS (ERV)
-msr_id = unique(omics_postdiff_draws_uno$ibrier_erv$msr_id)
 ridgeline_plot(post_draws = omics_postdiff_draws_uno[[msr_id]],
   title = 'Posterior Distribution Differences',
   subtitle = 'With vs without an omic',
   x_axis_label = 'Difference in IBS (ERV)',
-  size = size, ROPE_area = T, draw_arrow = T, pal = 'hue')
+  size = size, ROPE_area = T, draw_arrow = T, pal = 'hue',
+  rope_stats = rs, add_right = T, add_left = T)
 ggsave(file = paste0(res_path_uno, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
-
-rs = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size)
-write_csv(rs, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
-  size, '_', msr_id, '.csv'))
 
 # RCLL (ERV)
 size2 = 0.01
 msr_id = unique(omics_postdiff_draws_uno$rcll_erv$msr_id)
+rs = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size2)
+write_csv(rs, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
+  size2, '_', msr_id, '.csv'))
+
 ridgeline_plot(post_draws = omics_postdiff_draws_uno[[msr_id]],
   title = 'Posterior Distribution Differences',
   subtitle = 'With vs without an omic',
   x_axis_label = 'Difference in RCLL (ERV)',
-  size = size2, ROPE_area = T, draw_arrow = T, pal = 'hue')
+  size = size2, ROPE_area = T, draw_arrow = T, pal = 'hue',
+  rope_stats = rs, add_left = T)
 ggsave(file = paste0(res_path_uno, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
-
-rs = rope_stats(post_draws = omics_postdiff_draws_uno[[msr_id]], size = size2)
-write_csv(rs, file = paste0(res_path_uno, '/omics_ranking_ROPE_stats_' ,
-  size2, '_', msr_id, '.csv'))
 
 # RCLL ----
 message('### Models tuned with RCLL')
@@ -717,62 +721,56 @@ size = 0.02
 
 # Harrell's C-index
 msr_id = unique(omics_postdiff_draws_rcll$harrell_c$msr_id)
+rs = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size)
+write_csv(rs, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
+  size, '_', msr_id, '.csv'))
+
 ridgeline_plot(post_draws = omics_postdiff_draws_rcll[[msr_id]],
   title = 'Posterior Distribution Differences',
   subtitle = 'With vs without an omic',
   x_axis_label = 'Difference in Harrell\'s C-index',
-  size = size, ROPE_area = T, draw_arrow = T, pal = 'hue')
+  size = size, ROPE_area = T, draw_arrow = T, pal = 'hue',
+  rope_stats = rs, add_right = T, add_left = T)
 ggsave(file = paste0(res_path_rcll, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
+# Uno's C-index
+msr_id = unique(omics_postdiff_draws_rcll$uno_c$msr_id)
 rs = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size)
 write_csv(rs, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
   size, '_', msr_id, '.csv'))
 
-# Uno's C-index
-msr_id = unique(omics_postdiff_draws_rcll$uno_c$msr_id)
 ridgeline_plot(post_draws = omics_postdiff_draws_rcll[[msr_id]],
   title = 'Posterior Distribution Differences',
   subtitle = 'With vs without an omic',
   x_axis_label = 'Difference in Uno\'s C-index',
-  size = size, ROPE_area = T, draw_arrow = T, pal = 'hue')
+  size = size, ROPE_area = T, draw_arrow = T, pal = 'hue',
+  rope_stats = rs, add_right = T, add_left = T)
 ggsave(file = paste0(res_path_rcll, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
 
+# IBS (ERV)
+msr_id = unique(omics_postdiff_draws_rcll$ibrier_erv$msr_id)
 rs = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size)
 write_csv(rs, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
   size, '_', msr_id, '.csv'))
 
-# IBS (ERV)
-msr_id = unique(omics_postdiff_draws_rcll$ibrier_erv$msr_id)
-n_omics = nlevels(omics_postdiff_draws_rcll$ibrier_erv$omic)
 ridgeline_plot(post_draws = omics_postdiff_draws_rcll[[msr_id]],
   title = 'Posterior Distribution Differences',
   subtitle = 'With vs without an omic',
   x_axis_label = 'Difference in IBS (ERV)',
-  size = size, ROPE_area = T, draw_arrow = F, pal = 'hue')  +
-  # add arrow
-  annotate(
-    geom = 'segment',
-    x = 0, xend = size,
-    y = n_omics, yend = n_omics,
-    linewidth = 0.7,
-    arrow = arrow(ends = 'both', length = unit(0.05, 'in'))
-  ) +
-  annotate(
-    geom = 'text', label = size,
-    x = size, y = n_omics + 0.25
-  )
+  size = size, ROPE_area = T, draw_arrow = F, pal = 'hue',
+  rope_stats = rs, add_right = T, add_left = T)
 ggsave(file = paste0(res_path_rcll, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
-
-rs = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size)
-write_csv(rs, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
-  size, '_', msr_id, '.csv'))
 
 # RCLL (ERV)
 size2 = 0.01
 msr_id = unique(omics_postdiff_draws_rcll$rcll_erv$msr_id)
+rs = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size2)
+write_csv(rs, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
+  size2, '_', msr_id, '.csv'))
+
 ridgeline_plot(post_draws = omics_postdiff_draws_rcll[[msr_id]],
   title = 'Posterior Distribution Differences',
   subtitle = 'With vs without an omic',
@@ -780,10 +778,6 @@ ridgeline_plot(post_draws = omics_postdiff_draws_rcll[[msr_id]],
   size = size2, ROPE_area = T, draw_arrow = T, pal = 'hue')
 ggsave(file = paste0(res_path_rcll, '/omics_ranking_' , msr_id, '.png'),
   units = 'in', width = 7, height = 5, dpi = 300)
-
-rs = rope_stats(post_draws = omics_postdiff_draws_rcll[[msr_id]], size = size2)
-write_csv(rs, file = paste0(res_path_rcll, '/omics_ranking_ROPE_stats_' ,
-  size2, '_', msr_id, '.csv'))
 
 # Uno's C vs RCLL ----
 message('### Uno\'s C vs RCLL runing comparison')
