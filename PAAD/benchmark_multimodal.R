@@ -46,7 +46,6 @@ mm_uno = MOBenchmark$new(
   test_nrsmps = 100, test_workers = 20,
   test_measure_ids = test_measure_ids,
   tune_rsmp = rsmp('cv', folds = 5),
-  #tune_rsmp = rsmp('repeated_cv', repeats = 5, folds = 5),
   quiet = FALSE, keep_models = TRUE
 )
 
@@ -58,7 +57,6 @@ mm_rcll = MOBenchmark$new(
   test_nrsmps = 100, test_workers = 20,
   test_measure_ids = test_measure_ids,
   tune_rsmp = rsmp('cv', folds = 5),
-  #tune_rsmp = rsmp('repeated_cv', repeats = 5, folds = 5),
   quiet = FALSE, keep_models = TRUE
 )
 
