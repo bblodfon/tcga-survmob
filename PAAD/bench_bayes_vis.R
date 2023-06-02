@@ -94,7 +94,7 @@ model_perf_plot = function(post_draws, type = 'interval',
         .width = probs,
         point_interval = 'median_qi', # median quantile interval
         point_size = 3,
-        point_color = '#D55E00',
+        point_color = '#D55E00'
       ) +
       scale_color_manual(
         values = my_cols,
