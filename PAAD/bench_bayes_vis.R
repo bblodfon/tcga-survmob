@@ -10,7 +10,7 @@ library(ggdist)
 # TCGA study
 disease_code = 'PAAD'
 
-# Where to store the output images
+# Where to store the output figures
 models_path_uno  = paste0(disease_code, '/bench/mob_uno/')
 models_path_rcll = paste0(disease_code, '/bench/mob_rcll/')
 res_path_uno  = paste0(models_path_uno, 'results')
