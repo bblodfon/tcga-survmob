@@ -467,6 +467,39 @@ p +
 ggsave(file = paste0(res_path_uno, '/model_cmp_' , msr_id, '.png'), units = 'in',
   width = 6, height = 5, dpi = 300)
 
+#' Model contrasts (vs best model)
+best_model = levels(post_draws_uno$harrell_c$model)[1]
+pdu_har =
+  post_draws_uno$harrell_c %>%
+  select(-msr_id) %>%
+  pivot_wider(names_from = model, values_from = posterior, values_fn = list) %>%
+  unnest(everything()) %>%
+  mutate(
+    across(
+      .cols = -!!sym(best_model),
+      .fns = ~ . - !!sym(best_model) # minus the best model
+    )
+  ) %>%
+  select(-!!sym(best_model)) %>%
+  pivot_longer(cols = everything(), names_to = 'model', values_to = 'post_diff') %>%
+  mutate(
+    model = factor(model),
+    model = forcats::fct_reorder(model, .x = post_diff, .desc = TRUE)
+  )
+
+rs_har = rope_stats(post_draws = pdu_har, size = 0.02)
+ridgeline_plot(
+  post_draws = pdu_har,
+  title = 'Posterior Distribution Differences',
+  subtitle = paste0('vs ', best_model),
+  x_axis_label = 'Difference in Harrell\'s C-index',
+  size = 0.02, ROPE_area = T, draw_arrow = T, pal = 'viridis',
+  rope_stats = rs_har, add_right = F, add_left = F, x_left = -0.035,
+  add_within = T, x_within = -0.01
+)
+ggsave(file = paste0(res_path_uno, '/model_contrasts_' , msr_id, '.png'), units = 'in',
+  width = 6, height = 5, dpi = 300)
+
 # Uno's C-index
 msr_id = unique(post_draws_uno$uno_c$msr_id)
 p = model_perf_plot(type = 'interval', post_draws = post_draws_uno[[msr_id]],
@@ -504,6 +537,67 @@ p +
     arrow = arrow(ends = 'both', length = unit(0.1, 'in'))
   )
 ggsave(file = paste0(res_path_uno, '/model_cmp_' , msr_id, '.png'), units = 'in',
+  width = 6, height = 5, dpi = 300)
+
+#' Model contrasts (vs best model)
+best_model = levels(post_draws_uno$ibrier_erv$model)[1]
+pdu_ibrier =
+  post_draws_uno$ibrier_erv %>%
+  select(-msr_id) %>%
+  pivot_wider(names_from = model, values_from = posterior, values_fn = list) %>%
+  unnest(everything()) %>%
+  mutate(
+    across(
+      .cols = -!!sym(best_model),
+      #.cols = everything(),
+      .fns = ~ . - !!sym(best_model) # minus the best model
+    )
+  ) %>%
+  select(-!!sym(best_model)) %>%
+  pivot_longer(cols = everything(), names_to = 'model', values_to = 'post_diff') %>%
+  mutate(
+    model = factor(model),
+    model = forcats::fct_reorder(model, .x = post_diff, .desc = TRUE)
+  )
+
+pdu_ibrier %>%
+  ggplot(aes(y = model, x = post_diff, fill = model)) +
+  stat_slab(alpha = 0.8, height = 2, show.legend = FALSE) +
+  scale_fill_ramp_discrete(from = 'grey80') +
+  scale_fill_viridis_d()
+
+rs_ibrier = rope_stats(post_draws = pdu_ibrier, size = 0.05)
+ridgeline_plot(
+  post_draws = pdu_ibrier,
+  title = 'Posterior Distribution Differences',
+  subtitle = paste0('vs ', best_model),
+  x_axis_label = 'Difference in IBS (ERV)',
+  size = 0.05, ROPE_area = T, draw_arrow = T, pal = 'viridis',
+  rope_stats = rs_ibrier, add_right = F, add_left = F
+) +
+  # restrict values
+  xlim(c(-0.4, 0.05)) +
+  # add arrows to show that distributions are more to the left
+  annotate(
+    geom = 'segment',
+    x = -0.4, xend = -0.4,
+    y = 7, yend = 7, # 7th learner
+    linewidth = 0.7,
+    arrow = arrow(ends = 'both', length = unit(0.1, 'in'))
+  ) +
+  annotate(
+    geom = 'segment',
+    x = -0.4, xend = -0.4,
+    y = 8, yend = 8, # 8th learner
+    linewidth = 0.7,
+    arrow = arrow(ends = 'both', length = unit(0.1, 'in'))
+  ) +
+  # add ROPE within probability of second best model (CoxBoost)
+  annotate(
+    geom = 'text', label = paste0(round(rs_ibrier[1,'prob_within']*100), '%'),
+    x = -0.02, y = 1 + 0.5
+  )
+ggsave(file = paste0(res_path_uno, '/model_contrasts_' , msr_id, '.png'), units = 'in',
   width = 6, height = 5, dpi = 300)
 
 # RCLL (ERV)
