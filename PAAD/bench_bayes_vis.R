@@ -250,8 +250,8 @@ ridgeline_plot = function(post_draws, title = '', subtitle = '', x_axis_label = 
         fill_ramp = after_stat(abs(x - ROPE_center) > size)))
   } else {
     p = post_draws %>%
-      ggplot(aes(y = .data[[grp_var]], x = .data[[post_var]]),
-        fill = .data[[grp_var]])
+      ggplot(aes(y = .data[[grp_var]], x = .data[[post_var]],
+        fill = .data[[grp_var]]))
   }
 
   is_palette = (pal == 'hue' | pal == 'viridis')
