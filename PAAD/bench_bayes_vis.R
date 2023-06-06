@@ -214,20 +214,28 @@ omics_postdiff_draw = function(model_list, seed = seed) {
 #' annotations
 #' @param add_left add the left ROPE probabilities per group as extra text
 #' annotations
+#' @param add_within add the within ROPE probabilities per group as extra text
+#' annotations
 #' @param x_right designate the place on the x-axis to add the right ROPE
 #' probabilities.
 #' If NULL, the maximum posterior value is used.
 #' @param x_left designate the place on the x-axis to add the left ROPE
 #' probabilities.
 #' If NULL, the minimum posterior value is used.
+#' @param x_within designate the place on the x-axis to add the within ROPE
+#' probabilities.
+#' If NULL, `ROPE_center` is used.
 #' @param label_right title for the right ROPE text annotation.
 #' Default: **PPPD** => Posterior Probability of Positive Practical Difference
 #' @param label_left title for the left ROPE text annotation.
 #' Default: **PNPD** => Posterior Probability of Negative Practical Difference
+#' @param label_within title for the within ROPE text annotation.
+#' Default: **PPE** => Posterior Probability of Practical Equivalence
 ridgeline_plot = function(post_draws, title = '', subtitle = '', x_axis_label = '',
   size = 0.02, ROPE_center = 0, ROPE_area = TRUE, draw_arrow = TRUE, pal = 'hue',
-  rope_stats = NULL, add_right = FALSE, add_left = FALSE,
-  x_right = NULL, x_left = NULL, label_right = 'PPPD', label_left = 'PNPD'
+  rope_stats = NULL, add_right = FALSE, add_left = FALSE, add_within = FALSE,
+  x_right = NULL, x_left = NULL, x_within = NULL,
+  label_right = 'PPPD', label_left = 'PNPD', label_within = 'PPE'
 ) {
   grp_var = colnames(post_draws)[1]
   post_var = colnames(post_draws)[2]
@@ -322,6 +330,10 @@ ridgeline_plot = function(post_draws, title = '', subtitle = '', x_axis_label = 
     if (is.null(x_left)) {
       x_left = min(post_draws[[post_var]])
     }
+    #' `x_within` is the ROPE center unless otherwise specified
+    if (is.null(x_within)) {
+      x_within = ROPE_center
+    }
 
     for (index in 1:nrow(rope_stats)) {
       if (add_right) {
@@ -332,12 +344,22 @@ ridgeline_plot = function(post_draws, title = '', subtitle = '', x_axis_label = 
             x = x_right, y = index + 0.5
           )
       }
+
       if (add_left) {
-        prob_left  = rope_stats[index, 'prob_left']
+        prob_left = rope_stats[index, 'prob_left']
         p = p +
           annotate(
             geom = 'text', label = paste0(round(prob_left*100), '%'),
             x = x_left, y = index + 0.5
+          )
+      }
+
+      if (add_within) {
+        prob_within = rope_stats[index, 'prob_within']
+        p = p +
+          annotate(
+            geom = 'text', label = paste0(round(prob_within*100), '%'),
+            x = x_within, y = index + 0.5
           )
       }
     }
@@ -356,6 +378,14 @@ ridgeline_plot = function(post_draws, title = '', subtitle = '', x_axis_label = 
         annotate(
           geom = 'text', label = label_left, color = '#E41A1C', fontface = 2,
           x = x_left, y = index + 1.4
+        )
+    }
+
+    if (add_within) {
+      p = p +
+        annotate(
+          geom = 'text', label = label_within, color = '#984EA3', fontface = 2,
+          x = x_within, y = index + 1.4
         )
     }
   }
