@@ -1,7 +1,6 @@
 #' => Visualize Benchmarking Results using the output from the
 #' Bayesian analysis script (`bench_bayes.R`)
 #' => Need quite a few memory to run this script (close to 10GB)
-#' => Execute: `Rscript bench_bayes_vis.R`
 library(survmob)
 library(tidyverse)
 library(rstanarm)
