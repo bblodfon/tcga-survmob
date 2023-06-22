@@ -1,14 +1,34 @@
 # tcga-survmob
 
-This repository is a continuation of [paad-survival-bench](https://github.com/bblodfon/paad-survival-bench) - now the focus is to to use the developed [survmob](https://github.com/bblodfon/survmob) R library and many TCGA multimodal datasets to benchmark survival ML models and analyze the output results.
+## Intro
 
-- TO ADD: link for the full downloaded datasets.
+This repository is a continuation of [paad-survival-bench](https://github.com/bblodfon/paad-survival-bench), which included the initial code and several investigations conducted in TCGA's PAAD cohort.
+In the present repository, we use the [survmob](https://github.com/bblodfon/survmob) R package along with many [mlr3](https://github.com/mlr-org) packages to benchmark several survival ML models across many TCGA multimodal datasets and analyze the output results using Bayesian methods.
 
-The data download, pre-processing, feature selection, benchmarking and analysis scripts can be found in each of the folders corresponding to the TCGA study names, e.g. `PAAD`, `BLCA`, `OV`, etc.
-The general order of execution to get the benchmark results per cancer type is:
-- `download_data.R`
-- `preprocess.R`
-- `data_split.R`
-- `efs.R`
-- `task_subset.R`
-- `benchmark.R`
+## Benchmarking Workflow
+
+![](bench_workflow.png)
+
+Each step from the above workflow corresponds to a separate script.
+These scripts can be accessed in the folders whose names match the abbreviated TCGA study names, e.g. `PAAD`, `BLCA`, `OV`, etc.
+
+The **order of script execution** per cancer study is as follows:
+
+- `download_data.R` => Download omics and clinical data download, initial patient and omic filtering
+- `preprocess.R` => Convert datasets to `mlr3` survival tasks, preprocess omics data
+- `data_split.R` => Split cohort to train and test sets
+- `efs.R` => Perform ensemble feature selection (per omic dataset)
+- `task_subset.R` => Subset `mlr3` tasks to the most stable/robust features
+- `benchmark.R` => Perform the benchmark (AI model tuning and testing on all combinations of omics and clinical data)
+- `bench_bayes.R` => Fit Bayesian Linear Mixed-Effects (LME) models using the benchmarking results
+- `bench_bayes_vis.R` => Visualize model and omics rankings and other Bayesian posterior distribution differences
+- `bench_boot_vis.R` => Visualization of bootstrapped results on the test set cohort
+
+- TO ADD: Zenodo link for the full downloaded datasets.
+
+# Additional analyses
+
+- `efs_analysis.R` => Visualize the ensemble feature selection results per omic
+- `efs_multimodal.R` => Perform ensemble feature selection on a unified multi-modal dataset that combines all omics and the clinical data
+- `benchmark_multimodal.R` => Perform the benchmark (AI model tuning and testing on a single multimodal dataset, top 100 features are selected)
+- `efs_inv/msr_comp.R` => Comparison of two metrics (RCLL vs C-index) for optimizing the ensemble feature selection algorithm
