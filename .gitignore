@@ -7,3 +7,4 @@ other_cancer_types/
 */bench/*/*.rds
 Rplots.pdf
 README.html
+modal_corr_inv/
