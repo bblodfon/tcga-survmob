@@ -30,5 +30,5 @@ The **order of script execution** per cancer study is as follows:
 
 - `efs_analysis.R` => Visualize the ensemble feature selection results per omic
 - `efs_multimodal.R` => Perform ensemble feature selection on a unified multi-modal dataset that combines all omics and the clinical data
-- `benchmark_multimodal.R` => Perform the benchmark (AI model tuning and testing on a single multimodal dataset, top 100 features are selected)
+- `benchmark_multimodal.R` => Perform the benchmark (AI model tuning and testing on the unified multimodal dataset after feature selection)
 - `efs_inv/msr_comp.R` => Comparison of two metrics (RCLL vs C-index) for optimizing the ensemble feature selection algorithm
