@@ -41,7 +41,7 @@ pjaccard = function(a, b, n, N = 10000) {
 }
 
 calculate_similarity = function(omic, cindex_feats, rcll_feats, topn, N) {
-  #' just in case `topn` exceeds the number of total feature selected
+  #' just in case `topn` exceeds the number of total features selected
   cindex_topn = min(topn, length(cindex_feats))
   rcll_topn   = min(topn, length(rcll_feats))
 
