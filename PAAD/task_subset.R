@@ -18,6 +18,7 @@ disease_code = 'PAAD'
 tasks = readRDS(file = paste0(disease_code, '/data/tasks.rds'))
 efs_cindex = readRDS(file = paste0(disease_code, '/efs/cindex_efs.rds'))
 efs_rcll   = readRDS(file = paste0(disease_code, '/efs/rcll_efs.rds'))
+#' Only run after executing `efs_multimodal.R`
 efs_multimodal = readRDS(file = paste0(disease_code, '/efs/multimodal_efs.rds'))
 
 # top 20 features
@@ -47,6 +48,7 @@ if (FALSE) {
 }
 
 # Subset multimodal task (C-index) ----
+#' Only run after executing `efs_multimodal.R`
 message('Subset multimodal task\n')
 
 nfeats = sapply(tasks, function(task) {length(task$feature_names)})
