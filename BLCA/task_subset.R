@@ -71,11 +71,13 @@ message('%Total features selected per omic:')
 sel_feats = fs_tbl$feat_name
 total_sel_feats = length(sel_feats)
 100*
-  c(Clinical = sum(str_detect(string = sel_feats, pattern = 'mRNA|miRNA|CNA|meth', negate = TRUE))/total_sel_feats,
+  c(Clinical = sum(str_detect(string = sel_feats,
+    pattern = 'mRNA|miRNA|CNA|meth|RPPA', negate = TRUE))/total_sel_feats,
   mRNA = sum(str_detect(string = sel_feats, pattern = 'mRNA\\.'))/total_sel_feats,
   miRNA = sum(str_detect(string = sel_feats, pattern = 'miRNA\\.'))/total_sel_feats,
   CNA = sum(str_detect(string = sel_feats, pattern = 'CNA\\.'))/total_sel_feats,
-  Methyl = sum(str_detect(string = sel_feats, pattern = 'meth\\.'))/total_sel_feats
+  Methyl = sum(str_detect(string = sel_feats, pattern = 'meth\\.'))/total_sel_feats,
+  RPPA = sum(str_detect(string = sel_feats, pattern = 'RPPA\\.'))/total_sel_feats
 )
 
 #' We need to *correct the selection frequency* to account for the
@@ -88,12 +90,14 @@ fs_tbl = fs_tbl %>%
     str_detect(string = feat_name, pattern =  'miRNA\\.') ~ freq ^ prop_omic['miRNA'],
     str_detect(string = feat_name, pattern =  'CNA\\.')   ~ freq ^ prop_omic['CNA'],
     str_detect(string = feat_name, pattern =  'meth\\.')  ~ freq ^ prop_omic['Methyl'],
+    str_detect(string = feat_name, pattern =  'RPPA\\.')  ~ freq ^ prop_omic['RPPA'],
     TRUE ~ freq ^ prop_omic['Clinical']
   ), freq_scaled_log = case_when(
     str_detect(string = feat_name, pattern =  'mRNA\\.')  ~ freq ^ prop_omic_log['mRNA'],
     str_detect(string = feat_name, pattern =  'miRNA\\.') ~ freq ^ prop_omic_log['miRNA'],
     str_detect(string = feat_name, pattern =  'CNA\\.')   ~ freq ^ prop_omic_log['CNA'],
     str_detect(string = feat_name, pattern =  'meth\\.')  ~ freq ^ prop_omic_log['Methyl'],
+    str_detect(string = feat_name, pattern =  'RPPA\\.')  ~ freq ^ prop_omic_log['RPPA'],
     TRUE ~ freq ^ prop_omic_log['Clinical']
   ))
 
@@ -114,7 +118,7 @@ for (freq_val in c('freq', 'freq_scaled', 'freq_scaled_log')) {
     miRNA    = length(grep(x = topn_feats, pattern = 'miRNA')),
     CNA      = length(grep(x = topn_feats, pattern = 'CNA')),
     Methyl   = length(grep(x = topn_feats, pattern = 'meth')),
-    Clinical = length(grep(x = topn_feats, pattern = 'mRNA|miRNA|CNA|meth', invert = TRUE))
+    Clinical = length(grep(x = topn_feats, pattern = 'mRNA|miRNA|CNA|meth|RPPA', invert = TRUE))
   )
 }
 feat_stat_tbl = bind_rows(feat_stat_list)
