@@ -1,5 +1,7 @@
 # tcga-survmob
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8119247.svg)](https://doi.org/10.5281/zenodo.8119247)
+
 ## Intro
 
 This repository is a continuation of [paad-survival-bench](https://github.com/bblodfon/paad-survival-bench), which included the initial code and several investigations conducted in TCGA's PAAD cohort.
