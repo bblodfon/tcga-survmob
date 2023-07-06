@@ -4,15 +4,15 @@
 
 ## Intro
 
-This repository is a continuation of [paad-survival-bench](https://github.com/bblodfon/paad-survival-bench), which included the initial code and several investigations conducted in TCGA's PAAD cohort.
-In the present repository, we use the [survmob](https://github.com/bblodfon/survmob) R package along with many [mlr3](https://github.com/mlr-org) packages to benchmark several survival ML models across many TCGA multimodal datasets and analyze the output results using Bayesian methods.
+This repository is a continuation of [paad-survival-bench](https://github.com/bblodfon/paad-survival-bench), which included the initial code and several investigations conducted in TCGA's `PAAD` cohort.
+In the present repository, we use the [survmob](https://github.com/bblodfon/survmob) R package along with many [mlr3](https://github.com/mlr-org) packages to benchmark several survival ML models across two TCGA multimodal datasets (PAAD, BLCA) and analyze the output results using Bayesian methods.
 
 ## Benchmarking Workflow
 
 ![](bench_workflow.png)
 
 Each step from the above workflow corresponds to a separate script.
-These scripts can be accessed in the folders whose names match the abbreviated TCGA study names, e.g. `PAAD`, `BLCA`, `OV`, etc.
+These scripts can be accessed in the folders whose names match the abbreviated TCGA study names, e.g. `PAAD` and `BLCA`.
 
 The **order of script execution** per cancer study is as follows:
 
@@ -36,6 +36,6 @@ The **order of script execution** per cancer study is as follows:
 ## Notes
 
 - Open an issue if you want the full downloaded or processed datasets or any analysis result (R compressed objects) that due to size restrictions are not on this repository.
-- `check_packages.R` => versions of most important packages used.
+- `check_packages.R` => versions of most important packages used (for some reproducibility).
   - `survmob` version used: [v0.1.1](https://github.com/bblodfon/survmob/releases/tag/v0.1.1)
-  - Main `R` library for download and filtering/processing of the TCGA multi-omics was [curatedTCGAData](https://github.com/waldronlab/curatedTCGAData).
+  - `R` library used for download and filtering/processing of the TCGA multi-omics was [curatedTCGAData](https://github.com/waldronlab/curatedTCGAData).
