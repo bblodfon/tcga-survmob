@@ -1,0 +1,7 @@
+omic,prob_within,prob_right,prob_left
+CNA,0,1,0
+Clinical,0.4295,0.5513,0.0192
+Methylation,0.5249,0.4379,0.0372
+mRNA,0.6458,0.2354,0.1188
+miRNA,0.4084,0.0122,0.5794
+RPPA,0.0804,1e-4,0.9195

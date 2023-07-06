@@ -1,0 +1,10 @@
+model,prob_within,prob_right,prob_left
+CoxBoost,1,0,0
+CoxNet,1,0,0
+RSF (C-index),1,0,0
+RSF (ExtraTrees),1,0,0
+AORSF,1,0,0
+RSF (Maxstat),1,0,0
+RSF (Logrank),1,0,0
+XGBoost (Cox),1,0,0
+XGBoost (AFT),0,0,1
