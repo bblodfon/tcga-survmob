@@ -24,11 +24,16 @@ The **order of script execution** per cancer study is as follows:
 - `bench_bayes_vis.R` => Visualize model and omics rankings and other Bayesian posterior distribution differences
 - `bench_boot_vis.R` => Visualization of bootstrapped results on the test set cohort
 
-**Note**: open an issue if you want the full downloaded or processed datasets or any analysis result (R compressed objects) that due to size restrictiona are not on this repository.
-
 ## Additional analyses
 
 - `efs_analysis.R` => Visualize the ensemble feature selection results per omic
 - `efs_multimodal.R` => Perform ensemble feature selection on a unified multi-modal dataset that combines all omics and the clinical data
 - `benchmark_multimodal.R` => Perform the benchmark (AI model tuning and testing on the unified multimodal dataset after feature selection)
 - `efs_inv/msr_comp.R` => Comparison of two metrics (RCLL vs C-index) for optimizing the ensemble feature selection algorithm
+
+## Notes
+
+- Open an issue if you want the full downloaded or processed datasets or any analysis result (R compressed objects) that due to size restrictions are not on this repository.
+- `check_packages.R` => versions of most important packages used.
+  - `survmob` version used: [v0.1.1](https://github.com/bblodfon/survmob/releases/tag/v0.1.1)
+  - Main `R` library for download and filtering/processing of the TCGA multi-omics was [curatedTCGAData](https://github.com/waldronlab/curatedTCGAData).
