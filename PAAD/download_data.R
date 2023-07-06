@@ -108,7 +108,7 @@ for (num in 4:5) {
     arrange(desc(intersect_count)) %>%
     select(!combo_name) %>%
     filter(n_omics == num) %>%
-    slice(1)
+    dplyr::slice(1)
 
   print(paste0(
     "#Omics: ", row$n_omics,
