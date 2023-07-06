@@ -1,6 +1,10 @@
 #' For quick checking the version of packages required
 library(devtools)
 
+# download and filtering of multi-omics TCGA data
+package_info('curatedTCGAData', dependencies = F) # 1.20.1
+package_info('TCGAutils', dependencies = F) # 1.18.0
+
 # mlr3 and others
 package_info('mlr3', dependencies = F) # 0.15.0
 package_info('mlr3pipelines', dependencies = F) # 0.4.3
